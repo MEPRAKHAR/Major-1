@@ -22,7 +22,8 @@ const joinRoom = ()=>{
         return;
     }
 
-    navigate('/editor/${roomId}', {
+    navigate(`/editor/${roomId}`, {
+
         state:{
             username,
         },
@@ -49,13 +50,15 @@ const joinRoom = ()=>{
                 <button className="btn joinBtn" onClick={joinRoom}>Join</button>
                 <span className='createInfo'>
                     if you dont have an invite then create &nbsp;
-                    <a onClick={createNewRoom} href="" className='createNewBtn'>Create Room</a>
+                    <button onClick={createNewRoom} className="createNewBtn">Create Room</button>
+
                 </span>
             </div>
         </div>
         <footer>
             <h4>
-                Built with 💛 by <a href='https://github.com/MEPRAKHAR'>Prakhar & <a href='https://github.com/ikigai0822'>Pranay</a></a>
+            Built with <span role="img" aria-label="love">💛</span> by <a href="https://github.com/MEPRAKHAR">Prakhar</a> & <a href="https://github.com/ikigai0822">Pranay</a>
+
             </h4>
         </footer>
     </div>
