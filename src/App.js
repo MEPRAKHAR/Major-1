@@ -5,6 +5,7 @@ import EditorPage from './pages/Editorpage';
 import HomePage from './pages/Homepage';
 import { Toaster } from 'react-hot-toast';
 
+
 function App() {
   return (
       <>
@@ -20,6 +21,7 @@ function App() {
                   }}
               ></Toaster>
           </div>
+          
         
 
     <BrowserRouter>

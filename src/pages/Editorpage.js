@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
+import ChatBox from '../components/chatbox';
 
 const EditorPage = () => {
   const [clients, setClients] = useState([
@@ -39,7 +40,10 @@ const EditorPage = () => {
       </div>
 
       {/* Right section */}
-      <div className="right"></div>
+      <div className="right">
+        <h1>Welcome to the Chat</h1>
+        <ChatBox /> 
+    </div>
 
       {/* Bottom section */}
       <div className="bottom"></div>

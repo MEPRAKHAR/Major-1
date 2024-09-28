@@ -85,10 +85,11 @@ footer a:hover {
   border-color: #368654;
 }
 
-.mainWrap {
-  flex-grow: 1;
+.mainwrap {
   display: flex;
-  height: calc(100vh - 200px);
+  justify-content: space-between;
+  align-items: stretch;
+  min-height: calc(100vh - 64px);
 }
 
 .left {
@@ -101,10 +102,46 @@ footer a:hover {
 .left-top {
   flex: 1;
 }
+
 .right {
-  width: 300px;
-  border-left: 1px solid #ccc;
+  left: auto !important;
+  right: 20px !important;
 }
+
+.left {
+  left: 20px !important;
+  right: auto !important;
+}
+
+.right {
+  background-color: #090808;
+}
+
+.chat-container {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header {
+  padding: 10px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+}
+
+.chat-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  cursor: se-resize;
+}
+
 .middle {
   flex-grow: 1;
   border-right: 1px solid #ccc;
@@ -130,6 +167,7 @@ footer a:hover {
 .userName {
   margin-top: 10px;
 }
+
 
 
 .logo {
