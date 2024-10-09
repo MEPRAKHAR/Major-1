@@ -37,7 +37,7 @@ const Home = () => {
     return (
         <div className="homePageWrapper">
             <div className="formWrapper">
-                  <img src = "/logo192.png" alt="change the logo "/>
+                  <img src = "/public/logo192.png" alt="change the logo "/>
                 <h4 className="mainLabel">Paste ROOM ID</h4>
                 <div className="inputGroup">
                     <input
