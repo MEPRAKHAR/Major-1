@@ -19,6 +19,7 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
+    const [selectedLanguage,setSelectedLanguage]= useState('javascript');
 
     useEffect(() => {
         const init = async () => {
@@ -117,6 +118,10 @@ const EditorPage = () => {
                     Leave
                 </button>
         </div>
+        <div className="console-log">
+      {console.log('Language selector:', document.querySelector('.language-selector'))}
+    </div>
+
       </div>
 
       {/* Middle section with the Editor */}
@@ -124,10 +129,18 @@ const EditorPage = () => {
       <Editor
                     socketRef={socketRef}
                     roomId={roomId}
+                    selectedLanguage={selectedLanguage}
                     onCodeChange={(code) => {
                         codeRef.current = code;
                     }}
                 />
+      </div>
+
+      <div className="language-selector">
+        <select value = {selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
+        <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                </select>
       </div>
 
       {/* Right section */}

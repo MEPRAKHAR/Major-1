@@ -20,7 +20,12 @@ footer {
 }
 
 footer a {
-    color: #4aee88;
+    color: #4aed88;
+}
+
+footer a:hover {
+    color: #4aed88;
+    border-color: #4aed88;
 }
 
 .inputGroup {
@@ -68,7 +73,7 @@ footer a {
 
 .joinBtn:hover,
 .leaveBtn:hover {
-    background: #2b824c;
+    background: #38975e; /* Darker hover color for consistency */
 }
 
 .createInfo {
@@ -83,10 +88,9 @@ footer a {
     transition: all 0.3s ease-in-out;
 }
 
-.createNewBtn:hover,
-footer a:hover {
-    color: #368654;
-    border-color: #368654;
+.createNewBtn:hover {
+    color: #4aed88;
+    border-color: #4aed88;
 }
 
 .mainWrap {
@@ -97,45 +101,42 @@ footer a:hover {
 }
 
 .left {
-    background: #1c1e29;
+    background: #2a2c39; /* Slightly lighter dark color for differentiation */
     padding: 16px;
     color: #fff;
     width: 200px;
     border-right: 1px solid #ccc;
-  }
-  .left-top {
+}
+
+.left-top {
     flex: 1;
-  }
-  
-  .right {
-    left: auto !important;
-    right: 20px !important;
-  }
-  
-  .left {
-    left: 20px !important;
-    right: auto !important;
-  }
-  
-  .right {
+}
+
+.right {
     background-color: #090808;
-  }
-  
-  .chat-container {
-    background-color: white;
+    padding: 16px;
+}
+
+.chat-container {
+    background-color: #f8f8f8; /* Softer background for chat */
+    border: 1px solid #e0e0e0; /* Light border for definition */
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .chat-header {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+    padding: 16px;
+    margin: 20px;
+}
+
+.chat-header {
     padding: 10px;
     background-color: #f0f0f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: move;
-  }
-  .chat-resize-handle {
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-resize-handle {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -143,19 +144,18 @@ footer a:hover {
     height: 10px;
     background-color: #ccc;
     cursor: se-resize;
-  }
-  
+}
 
-  .middle {
+.middle {
     flex-grow: 1;
     border-right: 1px solid #ccc;
-  }
-  
-  .bottom {
+}
+
+.bottom {
     height: 10vh;
     border-top: 1px solid #ccc;
     border: 1px solid black;
-  }
+}
 
 .clientsList {
     display: flex;
@@ -170,6 +170,7 @@ footer a:hover {
     flex-direction: column;
     font-weight: bold;
 }
+
 .userName {
     margin-top: 10px;
 }
@@ -187,9 +188,36 @@ footer a:hover {
     width: 100%;
     margin-top: 20px;
 }
+
 .CodeMirror {
     min-height: calc(100vh - 20px);
     font-size: 20px;
     line-height: 1.6;
     padding-top: 20px;
+    background: #1e1f29; /* Slightly lighter background for editor area */
+    color: #e0e0e0; /* Softer text color */
 }
+
+/* Additional Styling for Borders and Shadows */
+input,
+textarea,
+button {
+    border: 1px solid #ddd;
+}
+
+button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow for button hover */
+}
+
+/*.language-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.language-selector select {
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+*/
