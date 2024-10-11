@@ -98,7 +98,7 @@ const EditorPage = () => {
             <div className="aside">
                 <div className="asideInner">
                     <div className="logo">
-                    <img className="logoImage" src="/logo192.png" alt="logo" />       
+                    <img className="logoImage" src="/codemate.jpg" alt="logo" />       
                     </div>
                     <h3>Connected</h3>
                     <div className="clientsList">
@@ -110,17 +110,14 @@ const EditorPage = () => {
                         ))}
                     </div>
                 </div>
-                <div className="left-bottom">
-                <button className="btn copyBtn" onClick={copyRoomId}>
-                    Copy ROOM ID
-                </button>
-                <button className="btn leaveBtn" onClick={leaveRoom}>
-                    Leave
-                </button>
+                <div className="button-container">
+                    <button className="btn copyBtn" onClick={copyRoomId}>
+                        Copy ROOM ID
+                    </button>
+                    <button className="btn leaveBtn" onClick={leaveRoom}>
+                        Leave
+                    </button>
         </div>
-        <div className="console-log">
-      {console.log('Language selector:', document.querySelector('.language-selector'))}
-    </div>
 
       </div>
 
