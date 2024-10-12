@@ -19,7 +19,7 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
-    const [selectedLanguage,setSelectedLanguage]= useState('javascript');
+    const [selectedLanguage, setSelectedLanguage] = useState('javascript');
 
     useEffect(() => {
         const init = async () => {
@@ -38,7 +38,6 @@ const EditorPage = () => {
                 username: location.state?.username,
             });
 
-            // Listening for joined event
             socketRef.current.on(
                 ACTIONS.JOINED,
                 ({ clients, username, socketId }) => {
@@ -54,7 +53,6 @@ const EditorPage = () => {
                 }
             );
 
-            // Listening for disconnected
             socketRef.current.on(
                 ACTIONS.DISCONNECTED,
                 ({ socketId, username }) => {
@@ -117,13 +115,11 @@ const EditorPage = () => {
                     <button className="btn leaveBtn" onClick={leaveRoom}>
                         Leave
                     </button>
+                </div>
         </div>
 
-      </div>
-
-      {/* Middle section with the Editor */}
-      <div className="middle">
-      <Editor
+            <div className="middle">
+                <Editor
                     socketRef={socketRef}
                     roomId={roomId}
                     selectedLanguage={selectedLanguage}
@@ -131,26 +127,22 @@ const EditorPage = () => {
                         codeRef.current = code;
                     }}
                 />
-      </div>
+            </div>
 
-      <div className="language-selector">
-        <select value = {selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
-        <option value="javascript">JavaScript</option>
+            <div className="language-selector">
+                <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
+                    <option value="javascript">JavaScript</option>
                     <option value="python">Python</option>
                 </select>
-      </div>
+            </div>
 
-      {/* Right section */}
-      <div className="right">
-        <h1>Welcome to the Chat</h1>
-        <ChatBox /> 
-    </div>
+            <div className="right">
+                <h1>Welcome to the Chat</h1>
+                <ChatBox /> 
+            </div>
 
-      {/* Bottom section */}
-      <div className="bottom"></div>
-    </div>
-        
-    );
-};
+            <div className="bottom"></div>
+        </div>
+)};
 
 export default EditorPage;
