@@ -1,16 +1,12 @@
+// src/pages/EditorPage.js
 import React, { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import ACTIONS from '../Actions';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
 import { initSocket } from '../socket';
-import {
-    useLocation,
-    useNavigate,
-    Navigate,
-    useParams,
-} from 'react-router-dom';
-import ChatBox from '../components/chatbox';
+import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
+import ChatBox from '../components/ChatBox';
 
 const EditorPage = () => {
     const socketRef = useRef(null);
@@ -38,34 +34,28 @@ const EditorPage = () => {
                 username: location.state?.username,
             });
 
-            socketRef.current.on(
-                ACTIONS.JOINED,
-                ({ clients, username, socketId }) => {
-                    if (username !== location.state?.username) {
-                        toast.success(`${username} joined the room.`);
-                        console.log(`${username} joined`);
-                    }
-                    setClients(clients);
-                    socketRef.current.emit(ACTIONS.SYNC_CODE, {
-                        code: codeRef.current,
-                        socketId,
-                    });
+            socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
+                if (username !== location.state?.username) {
+                    toast.success(`${username} joined the room.`);
+                    console.log(`${username} joined`);
                 }
-            );
+                setClients(clients);
+                socketRef.current.emit(ACTIONS.SYNC_CODE, {
+                    code: codeRef.current,
+                    socketId,
+                });
+            });
 
-            socketRef.current.on(
-                ACTIONS.DISCONNECTED,
-                ({ socketId, username }) => {
-                    toast.success(`${username} left the room.`);
-                    setClients((prev) => {
-                        return prev.filter(
-                            (client) => client.socketId !== socketId
-                        );
-                    });
-                }
-            );
+            socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+                toast.success(`${username} left the room.`);
+                setClients((prev) => {
+                    return prev.filter((client) => client.socketId !== socketId);
+                });
+            });
         };
+
         init();
+
         return () => {
             socketRef.current.disconnect();
             socketRef.current.off(ACTIONS.JOINED);
@@ -96,15 +86,12 @@ const EditorPage = () => {
             <div className="aside">
                 <div className="asideInner">
                     <div className="logo">
-                    <img className="logoImage" src="/codemate.jpg" alt="logo" />       
+                        <img className="logoImage" src="/codemate.jpg" alt="logo" />
                     </div>
                     <h3>Connected</h3>
                     <div className="clientsList">
                         {clients.map((client) => (
-                            <Client
-                                key={client.socketId}
-                                username={client.username}
-                            />
+                            <Client key={client.socketId} username={client.username} />
                         ))}
                     </div>
                 </div>
@@ -116,7 +103,7 @@ const EditorPage = () => {
                         Leave
                     </button>
                 </div>
-        </div>
+            </div>
 
             <div className="middle">
                 <Editor
@@ -130,19 +117,22 @@ const EditorPage = () => {
             </div>
 
             <div className="language-selector">
-                <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
+                <select
+                    value={selectedLanguage}
+                    onChange={(e) => setSelectedLanguage(e.target.value)}
+                >
                     <option value="javascript">JavaScript</option>
                     <option value="python">Python</option>
                 </select>
             </div>
 
             <div className="right">
-                <h1>Welcome to the Chat</h1>
-                <ChatBox /> 
+                <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
             </div>
 
             <div className="bottom"></div>
         </div>
-)};
+    );
+};
 
 export default EditorPage;

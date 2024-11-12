@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -104,6 +105,18 @@ io.on('connection', (socket) => {
         });
         delete userSocketMap[socket.id];
         socket.leave();
+    });
+
+    // Handle the 'message' event to broadcast chat messages
+    socket.on('message', (data) => {
+        console.log('Received message:', data);  // Add this line to check if the message is received
+        socket.in(data.roomId).emit('chat-message', data);  // Emit message to the room
+    });
+    
+    // Handle 'feedback' event to broadcast typing feedback
+    socket.on('feedback', (data) => {
+        // Broadcast typing feedback to all users in the same room
+        socket.in(data.roomId).emit('feedback', data);
     });
 });
 
