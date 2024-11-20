@@ -22,31 +22,45 @@ app.get('*', (req, res) => {
 });
 
 app.post("/compile", (req, res) => {
-    const { code, input, lang } = req.body;
+    console.log("Received Compiler POST request");
 
+    
     try {
+        const { code, input, lang } = req.body;
+        console.log("Extracted values:", { code, input, lang });
+        
         if (lang === "Python") {
+            console.log("Processing Python code");
+            
             const envData = getEnvData();
             
+            console.log("Environment data:", envData);
+            
             if (!input) {
+                console.log("Compiling without input");
                 compiler.compilePython(envData, code, (data) => {
+                    console.log("Python compilation result:", data);
                     res.send(data);
                 });
             } else {
+                console.log("Compiling with input");
                 compiler.compilePythonWithInput(envData, code, input, (data) => {
+                    console.log("Python compilation result:", data);
                     if (data.output) {
                         res.send(data);
-                        console.log(data);
+                        console.log("Compilation successful");
                     } else {
                         res.status(400).send({ output: "error" });
+                        console.log("Compilation failed");
                     }
                 });
             }
         } else {
+            console.log("Unsupported language:", lang);
             res.status(400).send({ output: "Unsupported language" });
         }
     } catch (err) {
-        console.error(err);
+        console.error("Error occurred:", err);
         res.status(500).send({ output: "Internal server error" });
     }
 });
@@ -120,5 +134,5 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
