@@ -131,6 +131,7 @@ const EditorPage = () => {
             </div>
 
             <div className="bottom"></div>
+            
         </div>
     );
 };
