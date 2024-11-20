@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.chrome.service import Service
 
-service = Service('/Users/PrakharGupta/Downloads/chromedriver-mac-arm64/chromedriver')
+service = Service('/Users/PrakharGupta/Downloads/chromedriver-linux64/chromedriver')
 driver = webdriver.Chrome(service=service)
 
 try:
