@@ -10,25 +10,31 @@ pipeline {
             }
         }
 
+        stage('Setup Python Environment') {
+            steps {
+                // Create a virtual environment for Python
+                sh 'python3 -m venv venv'
+                // Activate the virtual environment
+                sh 'source venv/bin/activate && pip install selenium'
+            }
+        }
+
         stage('Testing') {
             steps {
-                // Start the Node.js application
+                // Run the Node.js application
                 sh 'npm start &'
-
-                // Wait for the app to start (increase if needed)
-                sh 'sleep 15'
-
-                // Use python3 instead of python (if python3 is installed)
-                sh 'python3 test_home_page.py'
-
-                // Kill the Node.js process (ensure the app stops)
-                sh 'pkill -f "npm start"'
+                sh 'sleep 15' // Adjust timing as needed
+                // Run the Python Selenium tests
+                sh 'source venv/bin/activate && python3 test_home_page.py'
+                // Kill the Node.js process if needed
+                sh 'pkill -f "node"'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm install' // Install dependencies
+                // Install Node.js dependencies
+                sh 'npm install'
             }
             post {
                 success {
