@@ -15,7 +15,10 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
-    const [selectedLanguage, setSelectedLanguage] = useState('javascript');
+    const [selectedLanguage, setSelectedLanguage] = useState('python');
+    const [inputValue, setInputValue] = useState('');
+    const [outputValue, setOutputValue] = useState('');
+
 
     useEffect(() => {
         const init = async () => {
@@ -62,6 +65,31 @@ const EditorPage = () => {
             socketRef.current.off(ACTIONS.DISCONNECTED);
         };
     }, []);
+    const handleCompile = async () => {
+        try {
+            const code = codeRef.current.getValue();
+            const lang = selectedLanguage;
+            const input = inputValue.trim();
+
+            // Send compilation request to server
+            const response = await fetch('/compile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, input, lang }),
+            });
+
+            const result = await response.json();
+            setOutputValue(result.output || result.error);
+
+            // Handle any errors
+            if (!result.output && result.error) {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            console.error('Compilation error:', error);
+            setOutputValue(error.message || 'An error occurred during compilation.');
+        }
+    };
 
     async function copyRoomId() {
         try {
@@ -116,22 +144,37 @@ const EditorPage = () => {
                 />
             </div>
 
-            <div className="language-selector">
-                <select
-                    value={selectedLanguage}
-                    onChange={(e) => setSelectedLanguage(e.target.value)}
-                >
-                    <option value="javascript">JavaScript</option>
-                    <option value="python">Python</option>
-                </select>
-            </div>
 
             <div className="right">
-                <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
+                <div className="right-top">
+                    <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
+                </div>
+                   
+                <div className="right-bottom">
+                <div className="language-selector">
+                     <select
+                         value={selectedLanguage}
+                         onChange={(e) => setSelectedLanguage(e.target.value)}
+                     >
+                         <option value="python">Python</option>
+                         <option value="java">Java</option>
+                         <option value="cpp">C++</option>
+                     </select>
+                 </div>
+                    <input
+                        type="text"
+                        placeholder="Input (optional)"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+
+                    <button onClick={handleCompile}>Run</button>
+
+                    </div>
+                    <pre className="output">{outputValue}</pre>
+                </div>
             </div>
 
-            <div className="bottom"></div>
-        </div>
     );
 };
 
