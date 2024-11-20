@@ -19,6 +19,15 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    sh 'curl -sSL https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.85/linux64/chromedriver-linux64.zip -o chromedriver.zip'
+                    sh 'unzip chromedriver.zip -d /usr/local/bin/'
+                }
+            }
+        }
+
         stage('Testing') {
             steps {
                 // Run the Node.js application
