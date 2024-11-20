@@ -14,8 +14,8 @@ pipeline {
             steps {
                 // Create a virtual environment for Python
                 sh 'python3 -m venv venv'
-                // Activate the virtual environment
-                sh 'source venv/bin/activate && pip install selenium'
+                // Activate the virtual environment using POSIX-compliant dot (.)
+                sh '. venv/bin/activate && pip install selenium'
             }
         }
 
@@ -25,7 +25,7 @@ pipeline {
                 sh 'npm start &'
                 sh 'sleep 15' // Adjust timing as needed
                 // Run the Python Selenium tests
-                sh 'source venv/bin/activate && python3 test_home_page.py'
+                sh '. venv/bin/activate && python3 test_home_page.py'
                 // Kill the Node.js process if needed
                 sh 'pkill -f "node"'
             }
