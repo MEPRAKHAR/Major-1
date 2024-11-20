@@ -12,12 +12,19 @@ pipeline {
 
         stage('Testing') {
             steps {
-            sh 'npm start &'
-            sh 'sleep 11' // Adjust timing as needed
-            sh 'python test_home_page.py'
-            sh 'pkill -f "node"' // Kill the Node.js process if needed
-    }
-}
+                // Start the Node.js application
+                sh 'npm start &'
+
+                // Wait for the app to start (increase if needed)
+                sh 'sleep 15'
+
+                // Use python3 instead of python (if python3 is installed)
+                sh 'python3 test_home_page.py'
+
+                // Kill the Node.js process (ensure the app stops)
+                sh 'pkill -f "npm start"'
+            }
+        }
 
         stage('Build') {
             steps {
