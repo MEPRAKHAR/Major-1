@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'node' // Replace 'node' with the name of your NodeJS installation in Jenkins
+        nodejs 'node' // Use the NodeJS installation configured in Jenkins
     }
     stages {
         stage('Fetch Code') {
@@ -23,10 +23,29 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
+                    // Install Node.js dependencies
+                    sh 'npm install'
+                    
                     // Download ChromeDriver
                     sh 'curl -sSL https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.85/linux64/chromedriver-linux64.zip -o chromedriver.zip'
-                    // Unzip to a directory with proper permissions
-                    sh 'unzip chromedriver.zip -d ~/.local/bin/'
+                    sh 'unzip chromedriver.zip -d /usr/bin/'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // If you have a build process, run it here.
+                // For example, if using Webpack or TypeScript:
+                // sh 'npm run build'
+                echo 'Skipping build stage as this is a Node.js app without compilation.'
+            }
+            post {
+                success {
+                    echo "Build stage completed successfully."
+                }
+                failure {
+                    echo "Build stage failed."
                 }
             }
         }
@@ -46,20 +65,10 @@ pipeline {
                 sh 'pkill -f "npm start"'
             }
         }
-
-        stage('Build') {
-            steps {
-                // Install Node.js dependencies
-                sh 'npm install'
-            }
-            post {
-                success {
-                    echo "Build succeeded. Archiving artifacts."
-                }
-                failure {
-                    echo "Build failed."
-                }
-            }
+    }
+    post {
+        always {
+            echo "Pipeline finished."
         }
     }
 }
