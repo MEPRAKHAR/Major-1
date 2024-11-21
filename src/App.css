@@ -159,6 +159,7 @@ footer a:hover {
 .right {
   height: 90vh;
   display: flex;
+  flex-direction: column;
   width: 300px;
   background-color: #090808;
   color: black;
@@ -168,13 +169,18 @@ footer a:hover {
 }
 
 .right-top{
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
   height: 30vh;
 }
 
+.right-bottom{
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  height: 30vh;
+}
 
 
 
