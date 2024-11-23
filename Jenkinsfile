@@ -28,7 +28,7 @@ pipeline {
                     
                     // Download ChromeDriver
                     sh 'curl -sSL https://storage.googleapis.com/chrome-for-testing-public/131.0.6778.85/mac-arm64/chromedriver-mac-arm64.zip'
-                    sh 'cp /Users/PrakharGupta/Downloads/chromedriver-mac-arm64_2/chromedriver /usr/bin/'
+                    sh 'sudo cp /Users/PrakharGupta/Downloads/chromedriver-mac-arm64_2/chromedriver /usr/bin/'
                 }
             }
         }
