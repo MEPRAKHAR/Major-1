@@ -175,6 +175,11 @@ const EditorPage = () => {
                 </div>
             </div>
 
+
+            
+        </div>
+
+
     );
 };
 
