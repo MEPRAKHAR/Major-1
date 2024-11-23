@@ -8,9 +8,10 @@ const http = require('http');
 const path = require('path');
 const { Server } = require('socket.io');
 const ACTIONS = require('./src/Actions');
-
 const server = http.createServer(app);
 const io = new Server(server);
+const cors = require('cors');
+app.use(cors());
 
 compiler.init(options);
 
@@ -21,46 +22,92 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.post("/compile", (req, res) => {
-    const { code, input, lang } = req.body;
-
+app.post("/compile", function (req, res) {
+    var code = req.body.code
+    var input = req.body.input
+    var lang = req.body.lang
     try {
-        if (lang === "Python") {
-            const envData = getEnvData();
-            
+
+        if (lang === "Cpp") {
             if (!input) {
-                compiler.compilePython(envData, code, (data) => {
-                    res.send(data);
-                });
-            } else {
-                compiler.compilePythonWithInput(envData, code, input, (data) => {
+                var envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } }; // (uses g++ command to compile )
+                compiler.compileCPP(envData, code, function (data) {
                     if (data.output) {
                         res.send(data);
-                        console.log(data);
-                    } else {
-                        res.status(400).send({ output: "error" });
+                    }
+                    else {
+                        res.send({ output: "error" })
                     }
                 });
             }
-        } else {
-            res.status(400).send({ output: "Unsupported language" });
+            else {
+                var envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } }; // (uses g++ command to compile )
+                compiler.compileCPPWithInput(envData, code, input, function (data) {
+                    if (data.output) {
+                        res.send(data);
+                    }
+                    else {
+                        res.send({ output: "error" })
+                    }
+                });
+            }
         }
-    } catch (err) {
-        console.error(err);
-        res.status(500).send({ output: "Internal server error" });
+        else if (lang === "Java") {
+            if (!input) {
+                var envData = { OS: "windows" };
+                compiler.compileJava(envData, code, function (data) {
+                    if (data.output) {
+                        res.send(data);
+                    }
+                    else {
+                        res.send({ output: "error" })
+                    }
+                })
+            }
+            else {
+                //if windows  
+                var envData = { OS: "windows" };
+                //else
+                compiler.compileJavaWithInput(envData, code, input, function (data) {
+                    if (data.output) {
+                        res.send(data);
+                    }
+                    else {
+                        res.send({ output: "error" })
+                    }
+                })
+            }
+        }
+        else if (lang === "Python") {
+            if (!input) {
+                var envData = { OS: "windows" };
+                compiler.compilePython(envData, code, function (data) {
+                    if (data.output) {
+                        res.send(data);
+                    }
+                    else {
+                        res.send({ output: "error" })
+                    }
+                });
+            }
+            else {
+                var envData = { OS: "windows" };
+                compiler.compilePythonWithInput(envData, code, input, function (data) {
+                    if (data.output) {
+                        res.send(data);
+                    }
+                    else {
+                        res.send({ output: "error" })
+                    }
+                });
+            }
+        }
     }
-});
+    catch (e) {
+        console.log("error")
+    }
+})
 
-function getEnvData() {
-    switch (process.platform) {
-        case "win32":
-            return { OS: "windows" };
-        case "darwin":
-            return { OS: "macos" };
-        default:
-            throw new Error("Unsupported OS. This code only works on macOS and Windows.");
-    }
-}
 
 const userSocketMap = {};
 
@@ -120,5 +167,5 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
