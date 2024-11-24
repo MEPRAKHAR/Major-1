@@ -1,4 +1,3 @@
-// src/pages/EditorPage.js
 import React, { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import ACTIONS from '../Actions';
@@ -50,7 +49,7 @@ const EditorPage = () => {
             });
 
             socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
-                toast.success(`${username} left the room.`);
+                toast.success('${username} left the room.');
                 setClients((prev) => {
                     return prev.filter((client) => client.socketId !== socketId);
                 });
@@ -135,14 +134,21 @@ const EditorPage = () => {
                 </div>
     
                 <div className="middle">
-                    <Editor
-                        socketRef={socketRef}
-                        roomId={roomId}
-                        selectedLanguage={selectedLanguage}
-                        onCodeChange={(code) => {
-                            codeRef.current = code;
-                        }}
-                    />
+                <Editor
+                    socketRef={socketRef}
+                    roomId={roomId}
+                    language={
+                        selectedLanguage === 'python'
+                        ? 'python'
+                        : selectedLanguage === 'cpp'
+                        ? 'text/x-c++src'
+                        : 'text/x-java'
+                    } // Map languages to CodeMirror modes
+                    onCodeChange={(code) => {
+                        codeRef.current = code;
+                    }}
+                />
+
                 </div>
     
                 <div className="right">
@@ -150,6 +156,7 @@ const EditorPage = () => {
                         <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
                     </div>
                     <div className="right-bottom">
+
                         <div className="language-selector">
                             <select
                                 value={selectedLanguage}
