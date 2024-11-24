@@ -23,9 +23,10 @@ app.get('*', (req, res) => {
 });
 
 app.post("/compile", function (req, res) {
-    var code = req.body.code
-    var input = req.body.input
-    var lang = req.body.lang
+    var code = req.body.code;
+    var input = req.body.input;
+    var lang = req.body.lang;
+    console.log("request received");
     try {
 
         if (lang === "Cpp") {
@@ -167,5 +168,5 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
