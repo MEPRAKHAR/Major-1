@@ -36,7 +36,7 @@ const Editor = ({ socketRef, roomId, onCodeChange, selectedLanguage }) => {
             });
         }
         init();
-    }, [socketRef, roomId, onCodeChange, selectedLanguage]);
+    }, []);
 
     useEffect(() => {
         if (socketRef.current) {
