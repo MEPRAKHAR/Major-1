@@ -65,6 +65,25 @@ pipeline {
                 sh 'pkill -f "npm start"'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                echo 'Starting application using npm start...'
+
+                // Start the application in the foreground
+                sh 'npm start'
+                
+                echo 'Application started successfully.'
+            }
+            post {
+                success {
+                    echo "Deployment successful."
+                }
+                failure {
+                    echo "Deployment failed."
+                }
+            }
+        }
     }
     post {
         always {
