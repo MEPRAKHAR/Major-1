@@ -110,77 +110,71 @@ const EditorPage = () => {
     }
 
     return (
-        <div className="mainWrap">
-            <div className="aside">
-                <div className="asideInner">
-                    <div className="logo">
-                        <img className="logoImage" src="/codemate.jpg" alt="logo" />
+        <div>
+            <div className="mainWrap">
+                <div className="aside">
+                    <div className="asideInner">
+                        <div className="logo">
+                            <img className="logoImage" src="/codemate.jpg" alt="logo" />
+                        </div>
+                        <h3>Connected</h3>
+                        <div className="clientsList">
+                            {clients.map((client) => (
+                                <Client key={client.socketId} username={client.username} />
+                            ))}
+                        </div>
                     </div>
-                    <h3>Connected</h3>
-                    <div className="clientsList">
-                        {clients.map((client) => (
-                            <Client key={client.socketId} username={client.username} />
-                        ))}
+                    <div className="button-container">
+                        <button className="btn copyBtn" onClick={copyRoomId}>
+                            Copy ROOM ID
+                        </button>
+                        <button className="btn leaveBtn" onClick={leaveRoom}>
+                            Leave
+                        </button>
                     </div>
                 </div>
-                <div className="button-container">
-                    <button className="btn copyBtn" onClick={copyRoomId}>
-                        Copy ROOM ID
-                    </button>
-                    <button className="btn leaveBtn" onClick={leaveRoom}>
-                        Leave
-                    </button>
-                </div>
-            </div>
-
-            <div className="middle">
-                <Editor
-                    socketRef={socketRef}
-                    roomId={roomId}
-                    selectedLanguage={selectedLanguage}
-                    onCodeChange={(code) => {
-                        codeRef.current = code;
-                    }}
-                />
-            </div>
-
-
-            <div className="right">
-                <div className="right-top">
-                    <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
-                </div>
-                   
-                <div className="right-bottom">
-                <div className="language-selector">
-                     <select
-                         value={selectedLanguage}
-                         onChange={(e) => setSelectedLanguage(e.target.value)}
-                     >
-                         <option value="python">Python</option>
-                         <option value="java">Java</option>
-                         <option value="cpp">C++</option>
-                     </select>
-                 </div>
-                    <input
-                        type="text"
-                        placeholder="Input (optional)"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+    
+                <div className="middle">
+                    <Editor
+                        socketRef={socketRef}
+                        roomId={roomId}
+                        selectedLanguage={selectedLanguage}
+                        onCodeChange={(code) => {
+                            codeRef.current = code;
+                        }}
                     />
-
-                    <button onClick={handleCompile}>Run</button>
-
+                </div>
+    
+                <div className="right">
+                    <div className="right-top">
+                        <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
+                    </div>
+                    <div className="right-bottom">
+                        <div className="language-selector">
+                            <select
+                                value={selectedLanguage}
+                                onChange={(e) => setSelectedLanguage(e.target.value)}
+                            >
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                            </select>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Input (optional)"
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
+    
+                        <button onClick={handleCompile}>Run</button>
                     </div>
                     <pre className="output">{outputValue}</pre>
                 </div>
             </div>
-
-
-            
         </div>
-
-
     );
+    
 };
 
 export default EditorPage;
