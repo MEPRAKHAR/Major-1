@@ -156,27 +156,29 @@ const EditorPage = () => {
                         <ChatBox socketRef={socketRef} username={location.state?.username} roomId={roomId} />
                     </div>
                     <div className="right-bottom">
-                    <div className="language-selector">
-                        <select
-                            value={selectedLanguage}
-                            onChange={(e) => setSelectedLanguage(e.target.value)}
-                        >
-                            <option value="python">Python</option>
-                            <option value="cpp">C++</option>
-                            <option value="java">Java</option>
-                        </select>
-                    </div>
 
-                        <input
-                            type="text"
-                            placeholder="Input (optional)"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
+                        <div className="language-selector">
+                            <select
+                                value={selectedLanguage}
+                                onChange={(e) => setSelectedLanguage(e.target.value)}
+                            >
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                            </select>
+                        </div>
+                        <textarea
+                         rows="7"
+                         cols="20"
+                         placeholder="Input (optional)"
+                         value={inputValue}
+                         onChange={(e) => setInputValue(e.target.value)}
+                         style={{ resize: "vertical" }}
                         />
     
                         <button onClick={handleCompile}>Run</button>
                     </div>
-                    <pre className="output">{outputValue}</pre>
+                    <pre className="output">{outputValue}d</pre>
                 </div>
             </div>
         </div>
