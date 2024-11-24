@@ -161,11 +161,12 @@ const EditorPage = () => {
                             </select>
                         </div>
                         <textarea
-                         rows="3"
+                         rows="7"
                          cols="20"
                          placeholder="Input (optional)"
                          value={inputValue}
                          onChange={(e) => setInputValue(e.target.value)}
+                         style={{ resize: "vertical" }}
                         />
     
                         <button onClick={handleCompile}>Run</button>
