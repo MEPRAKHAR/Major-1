@@ -172,16 +172,44 @@ footer a:hover {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  height: 30vh;
+  height: 40%;
+  margin: 10px;
 }
 
 .right-bottom{
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  height: 30vh;
+  background-color: #f0f0f0;
+  height: 100%;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  margin: 20px;
 }
 
+.output{
+  background-color: #f0f0f0;
+  height: 100%;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  margin: 20px;
+  overflow-y:scroll; /* Enable scroll if chat gets long */
+}
+
+.language-selector textarea {
+  background-color: #1a1b25;
+  color: #e0e0e0;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  min-height: 120px; /* Minimum height */
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #4aed88; /* Highlight color when focused */
+}
 
 
 .button-container {

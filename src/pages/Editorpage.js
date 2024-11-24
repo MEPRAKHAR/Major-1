@@ -160,16 +160,17 @@ const EditorPage = () => {
                                 <option value="cpp">C++</option>
                             </select>
                         </div>
-                        <input
-                            type="text"
-                            placeholder="Input (optional)"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
+                        <textarea
+                         rows="3"
+                         cols="20"
+                         placeholder="Input (optional)"
+                         value={inputValue}
+                         onChange={(e) => setInputValue(e.target.value)}
                         />
     
                         <button onClick={handleCompile}>Run</button>
                     </div>
-                    <pre className="output">{outputValue}</pre>
+                    <pre className="output">{outputValue}d</pre>
                 </div>
             </div>
         </div>
