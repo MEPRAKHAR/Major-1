@@ -14,7 +14,7 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
-    const [selectedLanguage, setSelectedLanguage] = useState('python');
+    const [selectedLanguage, setSelectedLanguage] = useState('Python');
     const [inputValue, setInputValue] = useState('');
     const [outputValue, setOutputValue] = useState('');
 
@@ -65,13 +65,19 @@ const EditorPage = () => {
         };
     }, []);
     const handleCompile = async () => {
+        console.log(codeRef.current, inputValue, selectedLanguage);
+        
         try {
-            const code = codeRef.current.getValue();
+            if (!codeRef.current) {
+                throw new Error('Code editor not initialized');
+            }
+            const code = codeRef.current;
             const lang = selectedLanguage;
             const input = inputValue.trim();
+            console.log(code, lang, input);
 
             // Send compilation request to server
-            const response = await fetch('/compile', {
+            const response = await fetch('http://localhost:5001/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code, input, lang }),
@@ -89,6 +95,7 @@ const EditorPage = () => {
             setOutputValue(error.message || 'An error occurred during compilation.');
         }
     };
+
 
     async function copyRoomId() {
         try {
@@ -138,9 +145,9 @@ const EditorPage = () => {
                     socketRef={socketRef}
                     roomId={roomId}
                     language={
-                        selectedLanguage === 'python'
+                        selectedLanguage === 'Python'
                         ? 'python'
-                        : selectedLanguage === 'cpp'
+                        : selectedLanguage === 'Cpp'
                         ? 'text/x-c++src'
                         : 'text/x-java'
                     } // Map languages to CodeMirror modes
@@ -162,9 +169,9 @@ const EditorPage = () => {
                                 value={selectedLanguage}
                                 onChange={(e) => setSelectedLanguage(e.target.value)}
                             >
-                                <option value="python">Python</option>
-                                <option value="java">Java</option>
-                                <option value="cpp">C++</option>
+                                <option value="Python">Python</option>
+                                <option value="Java">Java</option>
+                                <option value="Cpp">C++</option>
                             </select>
                         </div>
                         <textarea
@@ -176,7 +183,7 @@ const EditorPage = () => {
                          style={{ resize: "vertical" }}
                         />
     
-                        <button onClick={handleCompile}>Run</button>
+                        <button onClick={()=> {console.log("Compiling");handleCompile()}}>Run</button>
                     </div>
                     <pre className="output">{outputValue}d</pre>
                 </div>
