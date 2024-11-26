@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Fetch Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/MEPRAKHAR/Major-1.git'
+                git branch: 'ci', url: 'https://github.com/MEPRAKHAR/Major-1.git'
             }
         }
 
@@ -53,16 +53,38 @@ pipeline {
         stage('Testing') {
             steps {
                 // Start the Node.js server in the background
-                sh 'npm start &'
-                
-                // Wait for the server to start (better synchronization than sleep)
-                sh 'until curl --silent --fail http://localhost:5001; do sleep 5; done'
+                sh '''
+                npm start &
+                echo $! > pid.file
+                '''
+
+                // Wait for the server to start
+                sh 'until curl --silent --fail http://localhost:5001; do sleep 15; done'
 
                 // Run the Python Selenium tests
                 sh '. venv/bin/activate && python3 test_home_page.py'
-                
+
                 // Kill the Node.js process gracefully after testing
-                sh 'pkill -f "npm start"'
+                sh '''
+                if [ -f pid.file ]; then
+                    kill $(cat pid.file) || true
+                else
+                    echo "No pid.file found, skipping process termination."
+                fi
+                '''
+            }
+        }
+
+        stage('Free Port') {
+            steps {
+                script {
+                    sh '''
+                    PID=$(lsof -t -i:5001)
+                    if [ ! -z "$PID" ]; then
+                        kill -9 $PID
+                    fi
+                    '''
+                }
             }
         }
 
@@ -70,8 +92,12 @@ pipeline {
             steps {
                 echo 'Starting application using npm start...'
 
-                // Start the application in the foreground
-                sh 'npm start'
+                // Start the application in the background
+                sh '''
+                export CI=false
+                npm start &
+                echo $! > pid.file
+                '''
                 
                 echo 'Application started successfully.'
             }
@@ -82,12 +108,19 @@ pipeline {
                 failure {
                     echo "Deployment failed."
                 }
+                always {
+                    // Ensure background process is terminated after deployment
+                    sh '''
+                    if [ -f pid.file ]; then
+                        kill $(cat pid.file) || true
+                    else
+                        echo "No pid.file found, skipping process termination."
+                    fi
+                    '''
+                }
             }
-        }
-    }
-    post {
-        always {
-            echo "Pipeline finished."
+            
         }
     }
 }
+
