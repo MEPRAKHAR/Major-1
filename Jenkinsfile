@@ -89,38 +89,41 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                echo 'Starting application using npm start...'
+    steps {
+        echo 'Starting application using npm start...'
 
-                // Start the application in the background
-                sh '''
-                export CI=false
-                npm start &
-                echo $! > pid.file
-                '''
-                
-                echo 'Application started successfully.'
-            }
-            post {
-                success {
-                    echo "Deployment successful."
-                }
-                failure {
-                    echo "Deployment failed."
-                }
-                always {
-                    // Ensure background process is terminated after deployment
-                    sh '''
-                    if [ -f pid.file ]; then
-                        kill $(cat pid.file) || true
-                    else
-                        echo "No pid.file found, skipping process termination."
-                    fi
-                    '''
-                }
-            }
-            
+        // Start the application in the background
+        sh '''
+        export CI=false
+        npm start &
+        echo $! > pid.file
+        '''
+
+        echo 'Application started successfully. Application will remain active for 10 minutes...'
+
+        // Keep the application active for 10 minutes
+        sh 'sleep 600'
+    }
+    post {
+        success {
+            echo "Deployment successful."
         }
+        failure {
+            echo "Deployment failed."
+        }
+        always {
+            // Ensure background process is terminated after deployment
+            sh '''
+            if [ -f pid.file ]; then
+                kill $(cat pid.file) || true
+            else
+                echo "No pid.file found, skipping process termination."
+            fi
+            '''
+        }
+    }
+}
+
     }
 }
 
