@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Fetch Code') {
             steps {
-                git branch: 'ci', url: 'https://github.com/MEPRAKHAR/Major-1.git'
+                git branch: 'main', url: 'https://github.com/MEPRAKHAR/Major-1.git'
             }
         }
 
