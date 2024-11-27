@@ -11,23 +11,29 @@ const ChatBox = ({ socketRef, username, roomId }) => {
 
     const sendMessage = () => {
         if (!message) return;
+        const messageId = Date.now().toString(); // Generate a unique ID
         const messageData = {
+            id: messageId,
             name: username,
             message,
             dateTime: new Date(),
-            roomId, // Include roomId in the message data
+            roomId,
         };
-        socketRef.current.emit('message', messageData); // Emit message to server
+        console.log("Sending message:", messageData);
+        socketRef.current.emit('message', messageData);
         addMessageToUI(true, messageData);
         setMessage('');
     };
 
     const addMessageToUI = (isOwnMessage, data) => {
-        const newMessage = {
-            ...data,
-            isOwnMessage,
-        };
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessages(prevMessages => {
+            const existingMessageIndex = prevMessages.findIndex(msg => msg.id === data.id);
+            if (existingMessageIndex !== -1) {
+                // Message already exists, don't add it again
+                return prevMessages;
+            }
+            return [...prevMessages, { ...data, isOwnMessage }];
+        });
     };
 
     // Emit feedback when user types in input
@@ -43,6 +49,7 @@ const ChatBox = ({ socketRef, username, roomId }) => {
         if (socketRef.current) {
             // Listen for incoming chat messages and display them
             socketRef.current.on('chat-message', (data) => {
+                console.log("Received message:", data);
                 addMessageToUI(false, data);
             });
 
@@ -70,7 +77,7 @@ const ChatBox = ({ socketRef, username, roomId }) => {
             <div className="messages" ref={messageContainerRef}>
                 {messages.map((msg, index) => (
                     <div
-                        key={index}
+                        key={msg.id}
                         className={`message ${msg.isOwnMessage ? 'own' : 'other'}`}
                     >
                         <p>
@@ -87,7 +94,7 @@ const ChatBox = ({ socketRef, username, roomId }) => {
                     value={message}
                     onChange={handleInput}
                     placeholder="Type a message..."
-                    onKeyUp={handleTyping} // Call handleTyping on keyup to emit feedback
+                    onKeyUp={handleTyping}
                 />
                 <button type="submit">Send</button>
             </form>
