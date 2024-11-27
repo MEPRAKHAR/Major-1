@@ -77,7 +77,7 @@ const EditorPage = () => {
             console.log(code, lang, input);
 
             // Send compilation request to server
-            const response = await fetch('http://localhost:5000/compile', {
+            const response = await fetch('http://localhost:5001/compile', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code, input, lang }),
